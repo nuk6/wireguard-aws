@@ -2,7 +2,7 @@
 
 # We read from the input parameter the name of the client
 if [ -z "$1" ]
-  then 
+  then
     read -p "Enter VPN user name: " USERNAME
     if [ -z $USERNAME ]
       then
@@ -33,9 +33,10 @@ CLIENT_PRESHARED_KEY=$( wg genpsk )
 CLIENT_PRIVKEY=$( wg genkey )
 CLIENT_PUBLIC_KEY=$( echo $CLIENT_PRIVKEY | wg pubkey )
 
-#echo $CLIENT_PRESHARED_KEY > ./"$USERNAME$PRESHARED_KEY"
-#echo $CLIENT_PRIVKEY > ./"$USERNAME$PRIV_KEY"
-#echo $CLIENT_PUBLIC_KEY > ./"$USERNAME$PUB_KEY"
+# Preserve client public/private keys on server.
+echo $CLIENT_PRESHARED_KEY > ./"$USERNAME$PRESHARED_KEY"
+echo $CLIENT_PRIVKEY > ./"$USERNAME$PRIV_KEY"
+echo $CLIENT_PUBLIC_KEY > ./"$USERNAME$PUB_KEY"
 
 read SERVER_PUBLIC_KEY < /etc/wireguard/server_public.key
 
@@ -46,7 +47,7 @@ echo $OCTET_IP > /etc/wireguard/last_used_ip.var
 
 CLIENT_IP="$VPN_SUBNET$OCTET_IP/32"
 
-# Create a blank configuration file client 
+# Create a blank configuration file client
 cat > /etc/wireguard/clients/$USERNAME/$USERNAME.conf << EOF
 [Interface]
 PrivateKey = $CLIENT_PRIVKEY
@@ -83,4 +84,4 @@ echo "# Display $USERNAME.conf"
 cat ./$USERNAME.conf
 
 # Save QR config to png file
-#qrencode -t png -o ./$USERNAME.png < ./$USERNAME.conf
+qrencode -t png -o ./$USERNAME.png < ./$USERNAME.conf
