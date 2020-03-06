@@ -3,6 +3,9 @@ Scripts automate the installation and use of Wireguard on AWS with Ubuntu Server
 
 ## How use
 
+## RES:
+  - https://habr.com/en/post/449234/
+
 ### Installation
 ```
 git clone https://github.com/pprometey/wireguard_aws.git wireguard_aws
